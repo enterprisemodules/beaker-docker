@@ -88,7 +88,7 @@ module Beaker
           unless host['mount_folders'].nil?
             container_opts['HostConfig'] ||= {}
             container_opts['HostConfig']['Binds'] = host['mount_folders'].values.map do |mount|
-              a = [ File.expand_path(mount['host_path']), mount['container_path'] ]
+              a = [ mount['host_path'], mount['container_path'] ]
               a << mount['opts'] if mount.has_key?('opts')
               a.join(':')
             end
@@ -224,8 +224,8 @@ module Beaker
           dockerfile = File.read(host['dockerfile'])
         else
           raise "requested Dockerfile #{host['dockerfile']} does not exist"
-        end 
-      else 
+        end
+      else
         raise("Docker image undefined!") if (host['image']||= nil).to_s.empty?
 
         # specify base image
